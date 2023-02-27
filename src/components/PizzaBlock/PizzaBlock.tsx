@@ -10,7 +10,7 @@ import {
 } from "../../redux/slices/cartSlice"
 import { store } from "../../redux/store"
 // TYPES
-import { PizzaItemType } from "../../redux/slices/pizzasSlice"
+import { PizzaItemType } from "../../redux/pizza/pizzasSlice"
 import { Link } from "react-router-dom"
 
 export const PizzaBlock: React.FC<PizzaItemType> = ({
@@ -43,12 +43,10 @@ export const PizzaBlock: React.FC<PizzaItemType> = ({
       }
       dispatch(addCartItem(item))
       dispatch(changeTotalPrice())
-      console.log(store)
    }
 
    const typesForRender = () => {
       return types.map((t, i) => {
-         // console.log(t);
          return (
             <li
                key={t}

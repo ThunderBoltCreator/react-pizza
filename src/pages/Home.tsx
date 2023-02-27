@@ -1,10 +1,10 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router"
 import qs from "qs"
 
 import { Categories } from "../components/Categories"
-import { Sort } from "../components/Sort"
+import { Sort, arrPopup } from "../components/Sort"
 import Skeleton from "../components/PizzaBlock/skeleton"
 import { PizzaBlock } from "../components/PizzaBlock/PizzaBlock"
 import { Pagination } from "../components/Pagination/Pagination"
@@ -12,35 +12,32 @@ import { Pagination } from "../components/Pagination/Pagination"
 import {
    getFilterSelector,
    setCategoryId,
-   setCurrentPage,
+   setCurrentPage, setFilters, setFiltersType,
+   setSort, SortType,
 } from "../redux/slices/filterSlice"
-import { fetchPizzas, getPizzasSelector } from "../redux/slices/pizzasSlice"
+import { fetchPizzas, getPizzasSelector, FetchPizzasParamsType } from "../redux/pizza/pizzasSlice"
 import { useAppDispatch } from "../redux/store"
 
 export const Home: React.FC = () => {
    const dispatch = useAppDispatch()
    const navigate = useNavigate()
-   const { items, status } = useSelector(getPizzasSelector)
-   const isMounted = React.useRef(false)
 
+   const { items, status } = useSelector(getPizzasSelector)
    const { searchValue, currentPage, categoryId, sort } =
       useSelector(getFilterSelector)
 
-   const sortBy = sort.sortProperty
+   const isMounted = React.useRef(false)
+   const isSearch = React.useRef(false)
+   const sortProperty = sort.sortProperty
    const order = sort.order
+   console.log('sortBy',sortProperty)
+   console.log('order',order)
 
-   const location = useLocation()
-   React.useEffect(() => {
-      if (window.location.search) {
-         const params = qs.parse(window.location.search.substring(1))
-         console.log("params", params)
-      }
-   }, [])
-
+   // собирает данныесортировки и передает в слайс пицц
    const getPizzas = async () => {
       const sortBy = sort.sortProperty
       const order = sort.order
-      const category = categoryId > 0 ? `&category=${categoryId}` : ""
+      const category = Number(categoryId) > 0 ? `&category=${categoryId}` : ""
       const search = searchValue ? `&search=${searchValue}` : ""
 
       dispatch(
@@ -49,39 +46,67 @@ export const Home: React.FC = () => {
             order,
             category,
             search,
-            currentPage,
-         })
+            currentPage: String(currentPage),
+         }),
       )
 
       window.scrollTo(0, 0)
    }
-
+   // собирает данные фильтрации из адресной строчки и отдает в фильтр слайс
    React.useEffect(() => {
-      getPizzas()
+      if (window.location.search) {
+         const params = qs.parse(window.location.search.substring(1))
+         console.log("params", params)
+         const sort = arrPopup.find(obj => obj.sortProperty === params.sortProperty)
+         console.log('params', params)
+         console.log('sort', sort)
+         console.log('dispatch',{ ...params, sort })
+
+         if (sort) {
+            const obj = { ...params, sort }
+            console.log(obj)
+            dispatch(setFilters(obj as setFiltersType))
+         }
+      }
+
+      isSearch.current = true
+   }, [])
+   // вызывает функцию достающую пиццы из бекенда
+   React.useEffect(() => {
+
+      if (!isSearch.current) {
+         getPizzas()
+      }
+
+      isSearch.current = true
    }, [categoryId, sort, searchValue, currentPage])
-
+   // берет данные о фильтрах и встраивает их в адресную строку
    React.useEffect(() => {
-      const queryString = qs.stringify({
-         currentPage,
-         categoryId,
-         sortBy,
-         order,
-      })
-      navigate(`?${queryString}`)
+      if (isMounted.current) {
+         const queryString = qs.stringify({
+            currentPage,
+            categoryId,
+            sortProperty,
+            order,
+         })
       console.log(queryString)
-   }, [categoryId, currentPage, sortBy, order])
+         navigate(`?${queryString}`)
+      }
+      isMounted.current = true
+   }, [categoryId, currentPage, sortProperty, order])
 
    const onClickCategoryHandler = React.useCallback((id: number) => {
-      dispatch(setCategoryId(id))
+      const value = String(id)
+      dispatch(setCategoryId(value))
    }, [])
-   const onChangePage = (value: number) => {
-      dispatch(setCurrentPage(value))
-   }
+   const onChangePage = useCallback( (value: number) => {
+      const page = String(value)
+      dispatch(setCurrentPage(page))
+   },[])
    const skeletons = [...new Array(6)].map((_, index) => (
       <Skeleton key={index} />
    ))
    const pizzasForRender = items.map((obj: any) => {
-      // console.log(obj);
       return <PizzaBlock key={obj.id} {...obj} />
    })
 

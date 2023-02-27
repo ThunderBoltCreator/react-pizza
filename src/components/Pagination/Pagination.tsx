@@ -22,7 +22,7 @@ export const Pagination: React.FC<PaginationPropsType> = ({ onChangePage }) => {
             onPageChange={(event) => onChangePage(+event.selected + 1)}
             pageRangeDisplayed={4}
             pageCount={3}
-            forcePage={currentPage - 1}
+            forcePage={Number(currentPage) - 1}
          />
       </div>
    )

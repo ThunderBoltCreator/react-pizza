@@ -25,7 +25,6 @@ export const CartItem: React.FC<CartItemPropsType> = ({
    count,
    id,
 }) => {
-   console.log(count)
    const dispatch = useDispatch()
 
    const onClickPlus = () => {

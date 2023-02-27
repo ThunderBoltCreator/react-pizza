@@ -10,7 +10,6 @@ export const Cart: React.FC = () => {
   const { totalPrice, items } = useSelector(getCartSelector);
   const cartItemsForRender = () => {
     return items.map((item: any) => {
-      console.log(item);
       return <CartItem key={item.id} {...item} />;
     });
   };
