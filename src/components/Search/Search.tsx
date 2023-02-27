@@ -13,7 +13,6 @@ export const Search: React.FC = () => {
    const [inputValue, setInputValue] = useState("")
 
    const onClearInput = (event: MouseEvent<SVGElement>) => {
-      console.log(event)
       dispatch(setSearchValue(""))
       setInputValue("")
 

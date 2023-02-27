@@ -15,13 +15,8 @@ export function Header() {
       0
    )
 
-   // React.useEffect(() => {
-   //    const json = JSON.stringify(items)
-   //    console.log(json)
-   // }, [items])
 
    const location = useLocation()
-   console.log(location)
    return (
       <div className="header">
          <div className="container">

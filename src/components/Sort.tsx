@@ -8,24 +8,25 @@ type SortPropsType = {
    value: SortType
 }
 
+export const arrPopup: SortType[] = [
+   { name: "популярности (DESC)", sortProperty: "rating", order: "desc" },
+   { name: "популярности (ASC)", sortProperty: "rating", order: "asc" },
+   { name: "цене (DESC)", sortProperty: "price", order: "desc" },
+   { name: "цене (ASC)", sortProperty: "price", order: "asc" },
+   { name: "алфавиту (DESC)", sortProperty: "title", order: "desc" },
+   { name: "алфавиту (ASC)", sortProperty: "title", order: "asc" },
+]
+
 export const Sort: React.FC<SortPropsType> = React.memo(({ value }) => {
    const dispatch = useDispatch()
    const sort = value
 
    const [open, setOpen] = useState(false)
 
-   const arrPopup: SortType[] = [
-      { name: "популярности (DESC)", sortProperty: "rating", order: "desc" },
-      { name: "популярности (ASC)", sortProperty: "rating", order: "asc" },
-      { name: "цене (DESC)", sortProperty: "price", order: "desc" },
-      { name: "цене (ASC)", sortProperty: "price", order: "asc" },
-      { name: "алфавиту (DESC)", sortProperty: "title", order: "desc" },
-      { name: "алфавиту (ASC)", sortProperty: "title", order: "asc" },
-   ]
+
    const sortRef = useRef<HTMLDivElement>(null)
 
    const popupRender = () => {
-      console.log("render")
       return arrPopup.map((item, itemIndex) => {
          return (
             <li
@@ -52,7 +53,6 @@ export const Sort: React.FC<SortPropsType> = React.memo(({ value }) => {
    }
 
    useEffect(() => {
-      // console.log("sort mount");
 
       const clickOutside = (event: MouseEvent) => {
          if (
@@ -66,7 +66,6 @@ export const Sort: React.FC<SortPropsType> = React.memo(({ value }) => {
       document.body.addEventListener("click", clickOutside)
 
       return () => {
-         // console.log("sort unmount");
          document.body.removeEventListener("click", clickOutside)
       }
    }, [])

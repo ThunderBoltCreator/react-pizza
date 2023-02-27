@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux"
 // SLICES
 import filter from "./slices/filterSlice"
 import cart from "./slices/cartSlice"
-import pizzas from "./slices/pizzasSlice"
+import pizzas from "./pizza/pizzasSlice"
 
 export type RootState = ReturnType<typeof store.getState>
 

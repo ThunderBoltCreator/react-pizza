@@ -28,8 +28,8 @@ const initialState: PizzasSliceType = {
    status: Status.LOADING,
 }
 
-type FetchPizzasParamsType = {
-   currentPage: number
+export type FetchPizzasParamsType = {
+   currentPage: string
    category: string
    sortBy: string
    order: string
