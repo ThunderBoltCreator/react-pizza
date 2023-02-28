@@ -3,7 +3,7 @@ import React, { ChangeEvent, MouseEvent } from "react"
 import s from "./search.module.scss"
 import { useCallback, useRef, useState } from "react"
 import debounce from "lodash.debounce"
-import { setSearchValue } from "../../redux/slices/filterSlice"
+import { setSearchValue } from "../../redux/filter/slice"
 import { useDispatch } from "react-redux"
 
 export const Search: React.FC = () => {

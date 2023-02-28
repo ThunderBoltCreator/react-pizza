@@ -1,31 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { RootState } from "../store"
+import { getCartFromLS } from "../../utils/getCartFromLS"
+import { calcCartTotalPrice } from "../../utils/calcCartTotalPrice"
+import { CartItem, CartSliceStateType, ChangeItemCountPayloadType } from "./types"
 
-export type CartItem = {
-   title: string
-   imageUrl: string
-   type: string
-   size: number
-   price: number
-   count: number
-   id: string
-}
-type ChangeItemCountPayloadType = {
-   id: string
-   option: "inc" | "dec"
-}
-
-interface CartSliceStateType {
-   totalPrice: number
-   items: CartItem[]
-}
+const { items, totalPrice } =  getCartFromLS()
 
 const initialState: CartSliceStateType = {
-   totalPrice: 0,
-   items: [],
+   items: items,
+   totalPrice: totalPrice
 }
 
-const cartSlice = createSlice({
+const slice = createSlice({
    name: "cart",
    initialState,
    reducers: {
@@ -33,7 +18,6 @@ const cartSlice = createSlice({
          const findItem = state.items.find(
             (obj) => obj.id === action.payload.id
          )
-
          if (findItem) {
             findItem.count++
          } else {
@@ -43,13 +27,9 @@ const cartSlice = createSlice({
             })
          }
       },
-
       changeTotalPrice(state) {
-         state.totalPrice = state.items.reduce((sum, obj) => {
-            return obj.price * obj.count + sum
-         }, 0)
+         state.totalPrice = calcCartTotalPrice(state.items)
       },
-
       changeItemCount(
          state,
          action: PayloadAction<ChangeItemCountPayloadType>
@@ -84,16 +64,12 @@ const cartSlice = createSlice({
    },
 })
 
-export const getCartSelector = (state: RootState) => state.cart
-export const getCartItemSelector = (id: string) => (state: RootState) =>
-   state.cart.items.find((obj) => obj.id === id)
-
 export const {
    addCartItem,
    changeItemCount,
    changeTotalPrice,
    deleteCartItem,
    clearCart,
-} = cartSlice.actions
+} = slice.actions
 
-export default cartSlice.reducer
+export default slice.reducer

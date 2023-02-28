@@ -1,6 +1,6 @@
 import React, { useCallback } from "react"
 import { useSelector } from "react-redux"
-import { useLocation, useNavigate } from "react-router"
+import { useNavigate } from "react-router"
 import qs from "qs"
 
 import { Categories } from "../components/Categories"
@@ -9,14 +9,12 @@ import Skeleton from "../components/PizzaBlock/skeleton"
 import { PizzaBlock } from "../components/PizzaBlock/PizzaBlock"
 import { Pagination } from "../components/Pagination/Pagination"
 
-import {
-   getFilterSelector,
-   setCategoryId,
-   setCurrentPage, setFilters, setFiltersType,
-   setSort, SortType,
-} from "../redux/slices/filterSlice"
-import { fetchPizzas, getPizzasSelector, FetchPizzasParamsType } from "../redux/pizza/pizzasSlice"
+import { setCategoryId, setCurrentPage, setFilters, } from "../redux/filter/slice"
 import { useAppDispatch } from "../redux/store"
+import { getFilterSelector } from "../redux/filter/selectors"
+import { getPizzasSelector } from "../redux/pizza/selectors"
+import { setFiltersType } from "../redux/filter/types"
+import { fetchPizzas } from "../redux/AsyncActions"
 
 export const Home: React.FC = () => {
    const dispatch = useAppDispatch()
@@ -30,8 +28,8 @@ export const Home: React.FC = () => {
    const isSearch = React.useRef(false)
    const sortProperty = sort.sortProperty
    const order = sort.order
-   console.log('sortBy',sortProperty)
-   console.log('order',order)
+   console.log("sortBy", sortProperty)
+   console.log("order", order)
 
    // собирает данныесортировки и передает в слайс пицц
    const getPizzas = async () => {
@@ -58,9 +56,9 @@ export const Home: React.FC = () => {
          const params = qs.parse(window.location.search.substring(1))
          console.log("params", params)
          const sort = arrPopup.find(obj => obj.sortProperty === params.sortProperty)
-         console.log('params', params)
-         console.log('sort', sort)
-         console.log('dispatch',{ ...params, sort })
+         console.log("params", params)
+         console.log("sort", sort)
+         console.log("dispatch", { ...params, sort })
 
          if (sort) {
             const obj = { ...params, sort }
@@ -74,9 +72,9 @@ export const Home: React.FC = () => {
    // вызывает функцию достающую пиццы из бекенда
    React.useEffect(() => {
 
-      if (!isSearch.current) {
-         getPizzas()
-      }
+      // if (!isSearch.current) {
+      getPizzas()
+      // }
 
       isSearch.current = true
    }, [categoryId, sort, searchValue, currentPage])
@@ -89,7 +87,7 @@ export const Home: React.FC = () => {
             sortProperty,
             order,
          })
-      console.log(queryString)
+         console.log(queryString)
          navigate(`?${queryString}`)
       }
       isMounted.current = true
@@ -99,10 +97,10 @@ export const Home: React.FC = () => {
       const value = String(id)
       dispatch(setCategoryId(value))
    }, [])
-   const onChangePage = useCallback( (value: number) => {
+   const onChangePage = useCallback((value: number) => {
       const page = String(value)
       dispatch(setCurrentPage(page))
-   },[])
+   }, [])
    const skeletons = [...new Array(6)].map((_, index) => (
       <Skeleton key={index} />
    ))
