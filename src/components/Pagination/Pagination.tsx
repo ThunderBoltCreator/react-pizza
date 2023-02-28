@@ -3,7 +3,7 @@ import ReactPaginate from "react-paginate"
 import { useSelector } from "react-redux"
 
 import s from "./pagination.module.scss"
-import { getFilterSelector } from "../../redux/slices/filterSlice"
+import { getFilterSelector } from "../../redux/filter/selectors"
 
 type PaginationPropsType = {
    onChangePage: (page: number) => void

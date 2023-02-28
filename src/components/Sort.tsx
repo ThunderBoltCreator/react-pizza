@@ -1,8 +1,9 @@
 // LIBS
 import React, { useEffect, useRef, useState } from "react"
 // COMPONENTS / TYPES /
-import { setSort, SortType } from "../redux/slices/filterSlice"
+import { setSort } from "../redux/filter/slice"
 import { useDispatch } from "react-redux"
+import { SortType } from "../redux/filter/types"
 
 type SortPropsType = {
    value: SortType
