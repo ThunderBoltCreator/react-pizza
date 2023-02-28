@@ -2,15 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { CartItem } from "../components/CartItem/CartItem";
 import { useDispatch, useSelector } from "react-redux";
-import { clearCart, getCartSelector } from "../redux/slices/cartSlice";
+import { clearCart } from "../redux/cart/slice";
 import CartEmpty from "../components/CartEmpty";
+import { getCartSelector } from "../redux/cart/selectors"
 
 export const Cart: React.FC = () => {
   const dispatch = useDispatch();
   const { totalPrice, items } = useSelector(getCartSelector);
   const cartItemsForRender = () => {
     return items.map((item: any) => {
-      console.log(item);
       return <CartItem key={item.id} {...item} />;
     });
   };

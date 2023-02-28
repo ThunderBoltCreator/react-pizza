@@ -29,7 +29,6 @@ const PizzaInfo: React.FC = () => {
     fetchPizza();
   }, [id]);
 
-  console.log(pizza);
   if (!pizza) {
     return <>"Загрузка... !"</>;
   }

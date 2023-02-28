@@ -3,7 +3,7 @@ import ReactPaginate from "react-paginate"
 import { useSelector } from "react-redux"
 
 import s from "./pagination.module.scss"
-import { getFilterSelector } from "../../redux/slices/filterSlice"
+import { getFilterSelector } from "../../redux/filter/selectors"
 
 type PaginationPropsType = {
    onChangePage: (page: number) => void
@@ -22,7 +22,7 @@ export const Pagination: React.FC<PaginationPropsType> = ({ onChangePage }) => {
             onPageChange={(event) => onChangePage(+event.selected + 1)}
             pageRangeDisplayed={4}
             pageCount={3}
-            forcePage={currentPage - 1}
+            forcePage={Number(currentPage) - 1}
          />
       </div>
    )

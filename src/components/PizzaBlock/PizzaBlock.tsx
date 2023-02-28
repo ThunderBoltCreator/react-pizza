@@ -2,16 +2,13 @@
 import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 // COMPONENTS AND PAGES
-import {
-   addCartItem,
-   CartItem,
-   changeTotalPrice,
-   getCartItemSelector,
-} from "../../redux/slices/cartSlice"
+import { addCartItem, changeTotalPrice, } from "../../redux/cart/slice"
 import { store } from "../../redux/store"
 // TYPES
-import { PizzaItemType } from "../../redux/slices/pizzasSlice"
+import { PizzaItemType } from "../../redux/pizza/types"
 import { Link } from "react-router-dom"
+import { getCartItemSelector } from "../../redux/cart/selectors"
+import { CartItem } from "../../redux/cart/types"
 
 export const PizzaBlock: React.FC<PizzaItemType> = ({
    title = "Название куда-то пропало",
@@ -43,12 +40,10 @@ export const PizzaBlock: React.FC<PizzaItemType> = ({
       }
       dispatch(addCartItem(item))
       dispatch(changeTotalPrice())
-      console.log(store)
    }
 
    const typesForRender = () => {
       return types.map((t, i) => {
-         // console.log(t);
          return (
             <li
                key={t}
