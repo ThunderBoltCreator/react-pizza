@@ -2,9 +2,10 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { useDispatch } from "react-redux"
 // SLICES
-import filter from "./filter/slice"
-import cart from "./cart/slice"
-import pizzas from "./pizza/slice"
+import filter from "redux/filter/slice"
+import cart from "redux/cart/slice"
+import pizzas from "redux/pizza/slice"
+import user from "redux/user/slice"
 
 export type RootState = ReturnType<typeof store.getState>
 
@@ -13,6 +14,7 @@ export const store = configureStore({
       filter,
       cart,
       pizzas,
+      user
    },
 })
 

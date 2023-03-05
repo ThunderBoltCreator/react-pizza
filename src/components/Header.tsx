@@ -4,18 +4,23 @@ import logoSvg from "../assets/img/pizza-logo.svg"
 import { Link } from "react-router-dom"
 import { Search } from "./Search/Search"
 import { getCartSelector } from "../redux/cart/selectors"
-import { useLocation } from "react-router"
+import { useLocation, useNavigate } from "react-router-dom"
 import React from "react"
+import { useAuth } from "hooks/useAuth"
 
 export function Header() {
+   const navigate = useNavigate()
+
+   // const isAuthProp = useAuth().isAuth,,
+   // console.log(isAuthProp)
+
    const { totalPrice, items } = useSelector(getCartSelector)
    const isMounted = React.useRef(false)
 
    const totalCartItems = items.reduce(
       (sum: number, item: any) => sum + item.count,
-      0,
+      0
    )
-
 
    React.useEffect(() => {
       if (isMounted.current) {

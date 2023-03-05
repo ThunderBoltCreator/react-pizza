@@ -12,7 +12,7 @@ const initialState: PizzasSliceType = {
    status: Status.LOADING,
 }
 
-const slice = createSlice({
+const pizzaSlice = createSlice({
    name: "pizzas",
    initialState,
    reducers: {
@@ -38,6 +38,6 @@ const slice = createSlice({
 })
 
 
-export const { setItems } = slice.actions
+export const { setItems } = pizzaSlice.actions
 
-export default slice.reducer
+export default pizzaSlice.reducer
